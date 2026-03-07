@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { User } from "../../types/User"
+import "./style.css"
 
 export default function Home() {
 
@@ -31,8 +32,10 @@ export default function Home() {
 
 
     return (
-        <div>
-            <h1>{user?.name}</h1>
+        <div className="main">
+            <div className="header">
+                <h1>{user?.name}</h1>
+            </div>
         </div>
     )
 }
