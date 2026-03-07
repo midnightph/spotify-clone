@@ -21,8 +21,12 @@ export default function Home() {
                     }
                 })
                     .then(res => res.json())
-                    .then(data => setUser(data));
-
+                    .then(data => setUser(data))
+                    .then(() => {
+                        if (!user) {
+                            return window.location.href = "/login"
+                        }
+                    });
             } catch (error) {
                 console.error('Error fetching user:', error)
             }
