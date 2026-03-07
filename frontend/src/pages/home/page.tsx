@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
+import { User } from "../../types/User"
 
 export default function Home() {
 
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState<User | null>(null)
 
     useEffect(() => {
         // Fetch user data from API or local storage
@@ -13,14 +14,11 @@ export default function Home() {
                 if (!userId) {
                     return window.location.href = "/login"
                 }
-
                 fetch(`${import.meta.env.VITE_API_URL}/user?userId=${userId}`, {
                     headers: {
                         'ngrok-skip-browser-warning': 'true'
                     }
-                }
-
-                )
+                })
                     .then(res => res.json())
                     .then(data => setUser(data));
 
@@ -28,15 +26,13 @@ export default function Home() {
                 console.error('Error fetching user:', error)
             }
         }
-
         fetchUser()
     }, [])
 
-    console.log('User:', user)
 
     return (
         <div>
-            <h1>Home</h1>
+            <h1>{user?.name}</h1>
         </div>
     )
 }
