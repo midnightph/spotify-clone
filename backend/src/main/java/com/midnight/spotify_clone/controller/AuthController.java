@@ -34,12 +34,14 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "https://accounts.spotify.com/authorize" +
+    public RedirectView login() {
+        String authUrl = "https://accounts.spotify.com/authorize" +
                 "?client_id=" + spotifyConfig.clientId +
                 "&response_type=code" +
                 "&redirect_uri=" + spotifyConfig.redirectUri +
                 "&scope=user-read-private user-read-email";
+
+        return new RedirectView(authUrl);
     }
 
     @GetMapping("/callback")
@@ -79,7 +81,7 @@ public class AuthController {
 
             response.addCookie(cookie);
 
-            return new RedirectView("http://localhost:5173/home");
+            return new RedirectView("http://localhost:5173/");
 
         } catch (Exception e) {
             e.printStackTrace();
