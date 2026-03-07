@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,7 +80,7 @@ public class AuthController {
 
             response.addCookie(cookie);
 
-            return new RedirectView("http://localhost:5173/");
+            return new RedirectView("http://localhost:5173/?userId=" + spotifyId);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,8 +128,8 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public User getUser(@CookieValue(name = "userId", required = false) String userId) {
-        if (userId == null) throw new RuntimeException("Usuário não autenticado");
-        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public User getUser(@RequestParam String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 }
