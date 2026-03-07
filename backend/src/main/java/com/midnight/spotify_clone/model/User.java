@@ -15,31 +15,61 @@ public class User {
     private String name;
     private String email;
 
-    @Column(name = "access_token")
+    @Column(name = "access_token", columnDefinition = "TEXT")
     private String accessToken;
 
-    @Column(name = "refresh_token")
+    @Column(name = "refresh_token", columnDefinition = "TEXT")
     private String refreshToken;
 
     @Column(name = "token_expires_at")
     private Long tokenExpiresAt; // timestamp em ms
 
     // Getters e Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getName() {
+        return name;
+    }
 
-    public String getAccessToken() { return accessToken; }
-    public void setAccessToken(String accessToken) { this.accessToken = accessToken; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getRefreshToken() { return refreshToken; }
-    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
+    public String getEmail() {
+        return email;
+    }
 
-    public Long getTokenExpiresAt() { return tokenExpiresAt; }
-    public void setTokenExpiresAt(Long tokenExpiresAt) { this.tokenExpiresAt = tokenExpiresAt; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public Long getTokenExpiresAt() {
+        return tokenExpiresAt;
+    }
+
+    public void setTokenExpiresAt(Long tokenExpiresAt) {
+        this.tokenExpiresAt = tokenExpiresAt;
+    }
 }

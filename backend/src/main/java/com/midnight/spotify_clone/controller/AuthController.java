@@ -1,16 +1,25 @@
 package com.midnight.spotify_clone.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midnight.spotify_clone.config.SpotifyConfig;
 import com.midnight.spotify_clone.model.User;
 import com.midnight.spotify_clone.repository.UserRepository;
-import org.springframework.web.bind.annotation.*;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Base64;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 public class AuthController {
@@ -34,22 +43,22 @@ public class AuthController {
     }
 
     @GetMapping("/callback")
-    public String callback(@RequestParam String code) {
+    public RedirectView callback(@RequestParam String code, HttpServletResponse response) {
         try {
             // 1. Troca o code pelo token
             JsonNode tokenData = getTokenFromSpotify(code);
 
-            String accessToken  = tokenData.get("access_token").asText();
+            String accessToken = tokenData.get("access_token").asText();
             String refreshToken = tokenData.get("refresh_token").asText();
-            long expiresIn      = tokenData.get("expires_in").asLong(); // segundos
-            long expiresAt      = System.currentTimeMillis() + (expiresIn * 1000);
+            long expiresIn = tokenData.get("expires_in").asLong(); // segundos
+            long expiresAt = System.currentTimeMillis() + (expiresIn * 1000);
 
             // 2. Busca dados do usuário no Spotify
             JsonNode userData = getSpotifyUserProfile(accessToken);
 
             String spotifyId = userData.get("id").asText();
-            String name      = userData.get("display_name").asText();
-            String email     = userData.get("email").asText();
+            String name = userData.get("display_name").asText();
+            String email = userData.get("email").asText();
 
             // 3. Salva ou atualiza no Supabase (via JPA)
             User user = userRepository.findById(spotifyId).orElse(new User());
@@ -62,11 +71,19 @@ public class AuthController {
 
             userRepository.save(user);
 
-            return "Usuário salvo! ID: " + spotifyId + " | Nome: " + name;
+            Cookie cookie = new Cookie("userId", spotifyId);
+            cookie.setHttpOnly(true); // JS não consegue ler
+            cookie.setSecure(false); // muda pra true em produção (HTTPS)
+            cookie.setPath("/");
+            cookie.setMaxAge(60 * 60 * 24 * 7); // 7 dias
+
+            response.addCookie(cookie);
+
+            return new RedirectView("http://localhost:5173/home");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Erro: " + e.getMessage();
+            return new RedirectView("http://localhost:5173/error");
         }
     }
 
@@ -103,8 +120,15 @@ public class AuthController {
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         StringBuilder response = new StringBuilder();
         String line;
-        while ((line = in.readLine()) != null) response.append(line);
+        while ((line = in.readLine()) != null)
+            response.append(line);
         in.close();
         return objectMapper.readTree(response.toString());
+    }
+
+    @GetMapping("/user")
+    public User getUser(@CookieValue(name = "userId", required = false) String userId) {
+        if (userId == null) throw new RuntimeException("Usuário não autenticado");
+        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 }
