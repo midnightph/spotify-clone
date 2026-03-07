@@ -1,5 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
+import "./style.css";
 
 export default function Login() {
   function handleLogin() {
@@ -8,8 +9,10 @@ export default function Login() {
 
   return (
     <div>
-      <h1>Login</h1>
-      <button onClick={handleLogin}>Entrar com Spotify</button>
+      <div className="login-container">
+        <h1>Login</h1>
+        <button onClick={handleLogin}>Entrar com Spotify</button>
+      </div>
     </div>
   )
 }
