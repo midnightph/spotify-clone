@@ -18,6 +18,7 @@ interface Props {
     tracks: Track[]
     isPossible?: boolean
     loading?: boolean
+    onSelect: (track: any) => void
 }
 
 function formatDuration(ms: number) {
@@ -45,13 +46,13 @@ function TracksSkeleton() {
     )
 }
 
-export default function TracksComponent({ tracks, isPossible, loading }: Props) {
+export default function TracksComponent({ tracks, isPossible, loading, onSelect }: Props) {
     return (
         <div className="tracks-container">
             {isPossible && <div className="not-possible">Due to API limitations, this playlist cannot be loaded.</div>}
             {loading ? <TracksSkeleton /> : (
                 tracks.map((t, index) => (
-                    <div key={t.item.id} className="track-item">
+                    <div key={t.item.id} className="track-item" onClick={() => onSelect(t.item)}>
                         <span className="track-number">{index + 1}</span>
                         <div className="track-img-wrapper">
                             <img src={t.item.album.images[0]?.url} alt={t.item.album.name} />

@@ -4,6 +4,7 @@ import "./style.css"
 import LoadingComponent from "./components/LoadingComponent"
 import PlaylistsComponent from "./components/PlaylistsComponent"
 import TracksComponent from "./components/TrackComponent"
+import PlayerComponent from "./components/PlayerComponent"
 
 export default function Home() {
 
@@ -13,9 +14,10 @@ export default function Home() {
     const [tracks, setTracks] = useState([])
     const [playlist, setPlaylist] = useState<Playlist[]>([])
     const [isLoadingTracks, setIsLoadingTracks] = useState(false)
+    const [selectedTrack, setSelectedTrack] = useState<any | null>(null)
 
-    function canLoad () {
-        if(playlist.find(p => p.id === selectedPlaylist && p.owner.display_name !== user?.name)) {
+    function canLoad() {
+        if (playlist.find(p => p.id === selectedPlaylist && p.owner.display_name !== user?.name)) {
             return true
         }
         return false
@@ -89,12 +91,12 @@ export default function Home() {
 
                         </div>
                     )}
-                    <TracksComponent tracks={tracks} isPossible={canLoad()} loading={isLoadingTracks} />
+                    <TracksComponent tracks={tracks} isPossible={canLoad()} loading={isLoadingTracks} onSelect={setSelectedTrack} />
                 </main>
             </div>
 
             <footer className="player">
-                {/* player aqui */}
+                <PlayerComponent track={selectedTrack} />
             </footer>
         </div>
     )

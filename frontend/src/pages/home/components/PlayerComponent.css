@@ -1,0 +1,124 @@
+.player {
+    height: 90px;
+    background: #181818;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    gap: 24px;
+    justify-content: center;
+    min-width: 70%;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    justify-content: center;  /* ← centraliza */
+}
+
+.player-btn, .player-btn-prev, .player-btn-next {
+    background: white;        /* ← cor nos botões */
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: black;
+}
+
+.player-btn-prev, .player-btn-next {
+    background: transparent;
+    color: white;
+    font-size: 18px;
+}
+
+.player-btn-prev:hover, .player-btn-next:hover {
+    color: #1db954;
+}
+
+.player.empty {
+    justify-content: center;
+    color: #b3b3b3;
+    font-size: 14px;
+}
+
+.player-track {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 250px;
+}
+
+.player-track img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.player-track-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.player-track-name {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.player-track-artist {
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.player-btn {
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.player-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.player-progress {
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.no-preview {
+    color: #b3b3b3;
+    font-size: 12px;
+    white-space: nowrap;
+}
