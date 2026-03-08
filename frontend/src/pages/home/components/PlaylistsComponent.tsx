@@ -31,6 +31,8 @@ export default function PlaylistsComponent({ userId }: Props) {
         fetchPlaylists()
     }, [userId])
 
+    console.log(playlists)
+
     function PlaylistsSkeleton() {
         return (
             <>

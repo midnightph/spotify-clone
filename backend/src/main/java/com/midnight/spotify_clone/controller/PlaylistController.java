@@ -8,21 +8,20 @@ import com.midnight.spotify_clone.service.AuthService;
 import com.midnight.spotify_clone.service.SpotifyClient;
 
 @RestController
-public class MusicController {
-
+public class PlaylistController {
+ 
     private final SpotifyClient spotifyClient;
     private final AuthService authService;
-    
-    public MusicController(SpotifyClient spotifyClient, AuthService authService) {
+    public PlaylistController(SpotifyClient spotifyClient, AuthService authService) {
         this.spotifyClient = spotifyClient;
         this.authService = authService;
     }
 
-    @GetMapping("/musicsFromPlaylist")
-    public String music(@RequestParam String userId, @RequestParam String playlistId) throws Exception {
+    @GetMapping("/playlist")
+    public String music(@RequestParam String userId) throws Exception {
         String accessToken = authService.getUser(userId).getAccessToken();
-        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/items";
+        String url = "https://api.spotify.com/v1/me/playlists?limit=50&offset=0";
         return spotifyClient.get(accessToken, url).toString();
     }
-    
+
 }
