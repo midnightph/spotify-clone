@@ -51,10 +51,11 @@ public class SpotifyClient {
     }
 
     private JsonNode readResponse(HttpURLConnection con) throws Exception {
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
         StringBuilder response = new StringBuilder();
         String line;
-        while ((line = in.readLine()) != null) response.append(line);
+        while ((line = in.readLine()) != null)
+            response.append(line);
         in.close();
         return objectMapper.readTree(response.toString());
     }
