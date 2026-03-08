@@ -23,6 +23,13 @@ export default function Home() {
         return false
     }
 
+    function handleLogout() {
+        localStorage.removeItem("userId")
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("refreshToken")
+        window.location.href = "/login"
+    }
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -67,10 +74,13 @@ export default function Home() {
     return (
         <div className="app-layout">
             <header className="header">
-                <div className="avatar">
-                    <img src={user?.imageUrl} alt="User Avatar" />
+                <div className="header-left">
+                    <div className="avatar">
+                        <img src={user?.imageUrl} alt="User Avatar" />
+                    </div>
+                    <h1 className="username">{user?.name}</h1>
                 </div>
-                <h1 className="username">{user?.name}</h1>
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
             </header>
 
             <div className="content">
