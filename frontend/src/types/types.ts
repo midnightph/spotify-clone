@@ -10,3 +10,10 @@ export interface User {
     country: string
     followers: string
 }
+
+export interface Playlist {
+    id: string
+    name: string
+    images: { url: string }[]
+    items: { total: number }
+}

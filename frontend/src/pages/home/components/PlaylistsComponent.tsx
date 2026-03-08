@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react"
 import "./PlaylistsComponent.css"
+import { Playlist } from "../../../types/types"
 
-interface Playlist {
-    id: string
-    name: string
-    images: { url: string }[]
-    items: { total: number }
-}
 
 interface Props {
     userId: string,
     callback: (playlistId: string) => void
+    playlistCallback: (playlists: Playlist[]) => void
 }
 
-export default function PlaylistsComponent({ userId, callback }: Props) {
-    const [playlists, setPlaylists] = useState<Playlist[]>([])
+export default function PlaylistsComponent({ userId, callback, playlistCallback }: Props) {
     const [isLoading, setIsLoading] = useState(true)
+    const [playlists, setPlaylists] = useState<Playlist[]>([])
 
     useEffect(() => {
         //@ts-ignore
@@ -25,7 +21,10 @@ export default function PlaylistsComponent({ userId, callback }: Props) {
                 headers: { 'ngrok-skip-browser-warning': 'true' }
             })
                 .then(res => res.json())
-                .then(data => setPlaylists(data.items ?? []))
+                .then(data => {
+                    playlistCallback(data.items ?? [])
+                    setPlaylists(data.items ?? [])
+                })
                 .finally(() => setIsLoading(false))
         }
 

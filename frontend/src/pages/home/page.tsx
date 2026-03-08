@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { User } from "../../types/User"
+import { User, Playlist } from "../../types/types"
 import "./style.css"
 import LoadingComponent from "./components/LoadingComponent"
 import PlaylistsComponent from "./components/PlaylistsComponent"
@@ -11,6 +11,7 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null)
     const [tracks, setTracks] = useState([])
+    const [playlist, setPlaylist] = useState<Playlist[]>([])
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -36,6 +37,7 @@ export default function Home() {
     useEffect(() => {
         const fetchPlaylist = async () => {
             if (!selectedPlaylist) return
+            setTracks([])
             //@ts-ignore
             const data = await fetch(`${import.meta.env.VITE_API_URL}/musicsFromPlaylist?userId=${localStorage.getItem("userId")}&playlistId=${selectedPlaylist}`, {
                 headers: { 'ngrok-skip-browser-warning': 'true' }
@@ -59,9 +61,22 @@ export default function Home() {
 
             <div className="content">
                 <aside className="sidebar">
-                    <PlaylistsComponent userId={localStorage.getItem("userId") || ""} callback={setSelectedPlaylist} />
+                    <PlaylistsComponent userId={localStorage.getItem("userId") || ""} callback={setSelectedPlaylist} playlistCallback={setPlaylist} />
                 </aside>
                 <main className="main-content">
+                    {selectedPlaylist && (
+                        <div className="playlist-info">
+                            <>
+                                <img src={playlist.find(p => p.id === selectedPlaylist)?.images[0]?.url} alt="Playlist Cover" />
+                                <div className="playlist-details">
+                                    <span>Playlist</span>
+                                    <h2 className="playlist-name">{playlist.find(p => p.id === selectedPlaylist)?.name}</h2>
+                                    <p className="playlist-total">{playlist.find(p => p.id === selectedPlaylist)?.items?.total} músicas</p>
+                                </div>
+                            </>
+
+                        </div>
+                    )}
                     <TracksComponent tracks={tracks} />
                 </main>
             </div>
