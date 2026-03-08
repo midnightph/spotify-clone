@@ -1,0 +1,78 @@
+.track-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.track-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.track-img-wrapper {
+    position: relative;
+    width: 51px;
+    height: 51px;
+    overflow: hidden;
+    border-radius: 4px;
+    
+}
+
+.track-img-wrapper img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.track-play-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.track-img-wrapper:hover .track-play-btn {
+    opacity: 1;
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 550px;
+}
+
+.track-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.track-artist {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.track-artist:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.track-number {
+    min-width: 20px;
+    font-size: 14px;
+    opacity: 0.8;
+}

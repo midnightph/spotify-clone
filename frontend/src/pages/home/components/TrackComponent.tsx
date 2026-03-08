@@ -1,4 +1,4 @@
-// components/TracksComponent.tsx
+import "./TrackComponent.css"
 
 interface Track {
     added_at: string
@@ -30,7 +30,10 @@ export default function TracksComponent({ tracks }: Props) {
             {tracks.map((t, index) => (
                 <div key={t.item.id} className="track-item">
                     <span className="track-number">{index + 1}</span>
-                    <img src={t.item.album.images[0]?.url} alt={t.item.album.name} />
+                    <div className="track-img-wrapper">
+                        <img src={t.item.album.images[0]?.url} alt={t.item.album.name} />
+                        <div className="track-play-btn">▶</div>
+                    </div>
                     <div className="track-info">
                         <span className="track-name">{t.item.name}</span>
                         <span className="track-artist">{t.item.artists[0]?.name}</span>
