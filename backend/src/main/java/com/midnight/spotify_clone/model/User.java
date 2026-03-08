@@ -15,6 +15,15 @@ public class User {
     private String name;
     private String email;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "followers")
+    private String followers;
+
     @Column(name = "access_token", columnDefinition = "TEXT")
     private String accessToken;
 
@@ -71,5 +80,29 @@ public class User {
 
     public void setTokenExpiresAt(Long tokenExpiresAt) {
         this.tokenExpiresAt = tokenExpiresAt;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(String followers) {
+        this.followers = followers;
     }
 }

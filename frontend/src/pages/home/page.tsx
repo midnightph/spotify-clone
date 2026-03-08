@@ -3,6 +3,7 @@ import { User } from "../../types/User"
 import "./style.css"
 import LoadingComponent from "./components/LoadingComponent"
 
+
 export default function Home() {
 
     const [user, setUser] = useState<User | null>(null)
@@ -28,6 +29,7 @@ export default function Home() {
                             return window.location.href = "/login"
                         }
                         setUser(data)
+                        console.log(data)
                     });
             } catch (error) {
                 console.error('Error fetching user:', error)
@@ -45,7 +47,10 @@ export default function Home() {
     return (
         <div className="main">
             <div className="header">
-                <h1>{user?.name}</h1>
+                <div className="avatar">
+                    <img src={user?.imageUrl} alt="User Avatar" />
+                </div>
+                <h1 className="username">{user?.name}</h1>
             </div>
         </div>
     )

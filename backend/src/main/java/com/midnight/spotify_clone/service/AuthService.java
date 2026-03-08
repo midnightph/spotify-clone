@@ -30,6 +30,9 @@ public class AuthService {
         user.setAccessToken(tokenData.get("access_token").asText());
         user.setRefreshToken(tokenData.get("refresh_token").asText());
         user.setTokenExpiresAt(System.currentTimeMillis() + (tokenData.get("expires_in").asLong() * 1000));
+        user.setImageUrl(userData.get("images").get(0).get("url").asText());
+        user.setCountry(userData.get("country").asText());
+        user.setFollowers(userData.get("followers").get("total").asText());
 
         return userRepository.save(user);
     }
