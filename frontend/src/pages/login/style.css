@@ -151,6 +151,7 @@ body {
     box-shadow: 0 8px 20px rgba(29, 185, 84, 0.3);
     text-transform: uppercase;
     letter-spacing: 1px;
+    min-width: 300px;
 }
 
 .spotify-btn:hover {
@@ -163,6 +164,26 @@ body {
 
 .spotify-btn:active {
     transform: translateY(-1px) scale(1.01);
+}
+
+.spotify-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .spotify-btn svg {
