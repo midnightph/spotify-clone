@@ -12,6 +12,14 @@ export default function Home() {
     const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null)
     const [tracks, setTracks] = useState([])
     const [playlist, setPlaylist] = useState<Playlist[]>([])
+    const [isLoadingTracks, setIsLoadingTracks] = useState(false)
+
+    function canLoad () {
+        if(playlist.find(p => p.id === selectedPlaylist && p.owner.display_name !== user?.name)) {
+            return true
+        }
+        return false
+    }
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -37,12 +45,16 @@ export default function Home() {
     useEffect(() => {
         const fetchPlaylist = async () => {
             if (!selectedPlaylist) return
+            if (!canLoad()) {
+                setIsLoadingTracks(true)
+            }
             setTracks([])
             //@ts-ignore
             const data = await fetch(`${import.meta.env.VITE_API_URL}/musicsFromPlaylist?userId=${localStorage.getItem("userId")}&playlistId=${selectedPlaylist}`, {
                 headers: { 'ngrok-skip-browser-warning': 'true' }
             }).then(r => r.json())
             setTracks(data.items ?? [])
+            setIsLoadingTracks(false)
         }
 
         fetchPlaylist()
@@ -77,7 +89,7 @@ export default function Home() {
 
                         </div>
                     )}
-                    <TracksComponent tracks={tracks} />
+                    <TracksComponent tracks={tracks} isPossible={canLoad()} loading={isLoadingTracks} />
                 </main>
             </div>
 
