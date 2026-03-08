@@ -10,27 +10,25 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        // Fetch user data from API or local storage
         const fetchUser = async () => {
             try {
+                // pequeno delay pra garantir que o App.jsx já salvou o userId
+                await new Promise(resolve => setTimeout(resolve, 100))
+
                 const userId = localStorage.getItem("userId")
 
                 if (!userId) {
                     return window.location.href = "/login"
                 }
+
                 fetch(`${import.meta.env.VITE_API_URL}/user?userId=${userId}`, {
-                    headers: {
-                        'ngrok-skip-browser-warning': 'true'
-                    }
+                    headers: { 'ngrok-skip-browser-warning': 'true' }
                 })
                     .then(res => res.json())
                     .then(data => {
-                        if (!data) {
-                            return window.location.href = "/login"
-                        }
+                        if (!data) return window.location.href = "/login"
                         setUser(data)
-                        console.log(data)
-                    });
+                    })
             } catch (error) {
                 console.error('Error fetching user:', error)
             } finally {
