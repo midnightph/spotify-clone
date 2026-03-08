@@ -14,24 +14,48 @@ interface Props {
 
 export default function PlaylistsComponent({ userId }: Props) {
     const [playlists, setPlaylists] = useState<Playlist[]>([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         //@ts-ignore
-        fetch(`${import.meta.env.VITE_API_URL}/playlist?userId=${userId}`, {
-            headers: { 'ngrok-skip-browser-warning': 'true' }
-        })
-        .then(res => res.json())
-        .then(data => setPlaylists(data.items))
+        const fetchPlaylists = async () => {
+            //@ts-ignore
+            await fetch(`${import.meta.env.VITE_API_URL}/playlist?userId=${userId}`, {
+                headers: { 'ngrok-skip-browser-warning': 'true' }
+            })
+                .then(res => res.json())
+                .then(data => setPlaylists(data.items))
+                .finally(() => setIsLoading(false))
+        }
+
+        fetchPlaylists()
     }, [userId])
+
+    function PlaylistsSkeleton() {
+        return (
+            <>
+                {[...Array(10)].map((_, i) => (
+                    <div key={i} className="playlist-skeleton">
+                        <div className="skeleton-img" />
+                        <div className="skeleton-text" />
+                    </div>
+                ))}
+            </>
+        )
+    }
 
     return (
         <div className="playlists-container">
-            {playlists.map(playlist => (
-                <div key={playlist.id} className="playlist-item">
-                    <img src={playlist.images[0]?.url} alt={playlist.name} />
-                    <span>{playlist.name}</span>
-                </div>
-            ))}
+            {isLoading ? (
+                <PlaylistsSkeleton />
+            ) : (
+                playlists.map(playlist => (
+                    <div key={playlist.id} className="playlist-item">
+                        <img src={playlist.images[0]?.url} alt={playlist.name} />
+                        <span>{playlist.name}</span>
+                    </div>
+                ))
+            )}
         </div>
     )
 }
