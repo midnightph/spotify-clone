@@ -16,4 +16,6 @@ export interface Playlist {
     name: string
     images: { url: string }[]
     items: { total: number }
+    owner: { display_name: string }
+    type: string
 }

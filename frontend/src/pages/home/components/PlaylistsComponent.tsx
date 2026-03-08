@@ -52,7 +52,10 @@ export default function PlaylistsComponent({ userId, callback, playlistCallback 
                 playlists.map(playlist => (
                     <div key={playlist.id} className="playlist-item" onClick={() => callback(playlist.id)}>
                         <img src={playlist.images[0]?.url} alt={playlist.name} />
-                        <span>{playlist.name}</span>
+                        <div className="playlist-item-info">
+                            <span className="playlist-item-name">{playlist.name}</span>
+                            <span className="playlist-item-meta">Playlist • {playlist.owner.display_name}</span>
+                        </div>
                     </div>
                 ))
             )}
