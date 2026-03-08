@@ -21,7 +21,7 @@ export default function Home() {
                     return window.location.href = "/login"
                 }
 
-                fetch(`${import.meta.env.VITE_API_URL}/user?userId=${userId}`, {
+                await fetch(`${import.meta.env.VITE_API_URL}/user?userId=${userId}`, {
                     headers: { 'ngrok-skip-browser-warning': 'true' }
                 })
                     .then(res => res.json())
