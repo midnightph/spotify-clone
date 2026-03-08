@@ -58,4 +58,11 @@ public class SpotifyClient {
         in.close();
         return objectMapper.readTree(response.toString());
     }
+
+    public JsonNode get(String accessToken, String url) throws Exception {
+        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Authorization", "Bearer " + accessToken);
+        return readResponse(con);
+    }
 }

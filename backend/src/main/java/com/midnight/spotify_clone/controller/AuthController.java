@@ -26,7 +26,7 @@ public class AuthController {
                 "?client_id=" + spotifyConfig.clientId +
                 "&response_type=code" +
                 "&redirect_uri=" + spotifyConfig.redirectUri +
-                "&scope=user-read-private user-read-email";
+                "&scope=user-read-private user-read-email playlist-read-private playlist-read-collaborative";
         return new RedirectView(authUrl);
     }
 
