@@ -24,7 +24,7 @@ export default function PlaylistsComponent({ userId }: Props) {
                 headers: { 'ngrok-skip-browser-warning': 'true' }
             })
                 .then(res => res.json())
-                .then(data => setPlaylists(data.items))
+                .then(data => setPlaylists(data.items ?? []))
                 .finally(() => setIsLoading(false))
         }
 

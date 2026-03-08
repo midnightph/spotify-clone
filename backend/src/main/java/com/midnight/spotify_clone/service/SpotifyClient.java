@@ -66,4 +66,23 @@ public class SpotifyClient {
         con.setRequestProperty("Authorization", "Bearer " + accessToken);
         return readResponse(con);
     }
+
+    public JsonNode refreshToken(String refreshToken) throws Exception {
+        URL url = new URL("https://accounts.spotify.com/api/token");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        con.setDoOutput(true);
+
+        String body = "grant_type=refresh_token"
+                + "&refresh_token=" + refreshToken
+                + "&client_id=" + spotifyConfig.clientId
+                + "&client_secret=" + spotifyConfig.clientSecret;
+
+        try (OutputStream os = con.getOutputStream()) {
+            os.write(body.getBytes("utf-8"));
+        }
+
+        return readResponse(con);
+    }
 }

@@ -9,10 +9,17 @@ function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const userId = params.get("userId")
-
     if (userId) {
       localStorage.setItem("userId", userId)
       window.history.replaceState({}, "", "/")
+
+      // busca os tokens do backend e salva
+      fetch(`${import.meta.env.VITE_API_URL}/user?userId=${userId}`)
+        .then(r => r.json())
+        .then(user => {
+          localStorage.setItem("accessToken", user.accessToken)
+          localStorage.setItem("refreshToken", user.refreshToken)
+        })
     }
   }, [])
 

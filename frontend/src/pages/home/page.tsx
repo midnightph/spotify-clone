@@ -16,16 +16,13 @@ export default function Home() {
                 const userId = localStorage.getItem("userId")
                 if (!userId) return window.location.href = "/login"
                 //@ts-ignore
-                await fetch(`${import.meta.env.VITE_API_URL}/user?userId=${userId}`, {
+                const data = await fetch(`${import.meta.env.VITE_API_URL}/user?userId=${userId}`, {
                     headers: { 'ngrok-skip-browser-warning': 'true' }
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (!data) return window.location.href = "/login"
-                        setUser(data)
-                    })
+                }).then(r => r.json())
+                setUser(data)
             } catch (error) {
                 console.error('Error fetching user:', error)
+                window.location.href = "/login"
             } finally {
                 setIsLoading(false)
             }
