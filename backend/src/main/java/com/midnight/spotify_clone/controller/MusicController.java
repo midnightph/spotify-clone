@@ -21,7 +21,7 @@ public class MusicController {
     @GetMapping("/musicsFromPlaylist")
     public String music(@RequestParam String userId, @RequestParam String playlistId) throws Exception {
         String accessToken = authService.getUser(userId).getAccessToken();
-        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/items";
+        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/items?limit=50&offset=0";
         return spotifyClient.get(accessToken, url).toString();
     }
     

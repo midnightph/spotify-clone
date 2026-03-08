@@ -3,11 +3,14 @@ import { User } from "../../types/User"
 import "./style.css"
 import LoadingComponent from "./components/LoadingComponent"
 import PlaylistsComponent from "./components/PlaylistsComponent"
+import TracksComponent from "./components/TrackComponent"
 
 export default function Home() {
 
     const [user, setUser] = useState<User | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null)
+    const [tracks, setTracks] = useState([])
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -30,6 +33,19 @@ export default function Home() {
         fetchUser()
     }, [])
 
+    useEffect(() => {
+        const fetchPlaylist = async () => {
+            if (!selectedPlaylist) return
+            //@ts-ignore
+            const data = await fetch(`${import.meta.env.VITE_API_URL}/musicsFromPlaylist?userId=${localStorage.getItem("userId")}&playlistId=${selectedPlaylist}`, {
+                headers: { 'ngrok-skip-browser-warning': 'true' }
+            }).then(r => r.json())
+            setTracks(data.items ?? [])
+        }
+
+        fetchPlaylist()
+    }, [selectedPlaylist])
+
     if (isLoading) return <LoadingComponent />
 
     return (
@@ -43,10 +59,10 @@ export default function Home() {
 
             <div className="content">
                 <aside className="sidebar">
-                    <PlaylistsComponent userId={localStorage.getItem("userId") || ""} />
+                    <PlaylistsComponent userId={localStorage.getItem("userId") || ""} callback={setSelectedPlaylist} />
                 </aside>
                 <main className="main-content">
-                    {/* conteúdo principal aqui */}
+                    <TracksComponent tracks={tracks} />
                 </main>
             </div>
 

@@ -9,10 +9,11 @@ interface Playlist {
 }
 
 interface Props {
-    userId: string
+    userId: string,
+    callback: (playlistId: string) => void
 }
 
-export default function PlaylistsComponent({ userId }: Props) {
+export default function PlaylistsComponent({ userId, callback }: Props) {
     const [playlists, setPlaylists] = useState<Playlist[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
@@ -30,8 +31,6 @@ export default function PlaylistsComponent({ userId }: Props) {
 
         fetchPlaylists()
     }, [userId])
-
-    console.log(playlists)
 
     function PlaylistsSkeleton() {
         return (
@@ -52,7 +51,7 @@ export default function PlaylistsComponent({ userId }: Props) {
                 <PlaylistsSkeleton />
             ) : (
                 playlists.map(playlist => (
-                    <div key={playlist.id} className="playlist-item">
+                    <div key={playlist.id} className="playlist-item" onClick={() => callback(playlist.id)}>
                         <img src={playlist.images[0]?.url} alt={playlist.name} />
                         <span>{playlist.name}</span>
                     </div>
